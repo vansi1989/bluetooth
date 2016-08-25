@@ -90,15 +90,12 @@ public class MainActivity extends Activity {
 	}
 	public void scan(View view) {
 		mBluetoothAdapter.startDiscovery();
-		ll_containner.clearDisappearingChildren();
+		ll_containner.removeAllViews();
 	}
 	public void stop(View view) {
 		mBluetoothAdapter.cancelDiscovery();
 	}
 	public void switchLight(View view) {
-		return;
-	}
-	public void connect(View view) {
 		try {
 			os.write(0x33);
 			os.flush();
@@ -106,7 +103,9 @@ public class MainActivity extends Activity {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+	}
+	public void connect(View view) {
+		return;
 	}
 	
 	public void init() {
