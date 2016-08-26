@@ -13,6 +13,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SyncStatusObserver;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -71,6 +72,7 @@ public class MainActivity extends Activity {
 //							socket = device.createInsecureRfcommSocketToServiceRecord(UUID.randomUUID());
 							socket.connect();
 							os = socket.getOutputStream();
+							System.out.println("asdf");
 							Toast.makeText(MainActivity.this, "成功连接"+device.getName(), Toast.LENGTH_SHORT).show();
 						} catch (IOException e) {
 							e.printStackTrace();
@@ -80,7 +82,6 @@ public class MainActivity extends Activity {
 				ll_containner.addView(tv);
 			} 
 		  }
-		;;
 	}
 
 	@Override
