@@ -80,6 +80,7 @@ public class MainActivity extends Activity {
 				ll_containner.addView(tv);
 			} 
 		  }
+		;;
 	}
 
 	@Override
