@@ -6,39 +6,44 @@
     tools:context="com.fan.bluetooth.MainActivity" >
 
     <Button
-        android:onClick="scan"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:onClick="scan"
         android:text="扫描蓝牙设备" />
 
     <Button
-        android:onClick="stop"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:onClick="stop"
         android:text="停止扫描" />
 
     <Button
-        android:onClick="connect"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:onClick="connect"
         android:text="连接蓝牙设备" />
 
     <Button
-        android:onClick="switchLight"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:onClick="switchLight"
         android:text="发命令" />
 
-    <LinearLayout 
+    <LinearLayout
         android:id="@+id/ll_containner"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:orientation="vertical">
-        
+        android:layout_height="wrap_content"
+        android:layout_weight="0.73"
+        android:orientation="vertical" >
     </LinearLayout>
-    <TextView 
-        android:id="@+id/et_devices"
+
+    <TextView
+        android:id="@+id/tvRecv"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"/>
+        android:hint="未收到数据"
+        android:layout_height="119dp" />
     
+<!--     <ExpandableListView 
+        ></ExpandableListView> -->
+
 </LinearLayout>

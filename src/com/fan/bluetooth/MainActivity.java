@@ -1,10 +1,10 @@
 package com.fan.bluetooth;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.UUID;
-
-import android.R.layout;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -13,10 +13,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SyncStatusObserver;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,10 +24,18 @@ import android.widget.Toast;
 public class MainActivity extends Activity {
 	private BluetoothAdapter mBluetoothAdapter;
 	private BluetoothReceiver mBluetoothReceiver;
-	private LinearLayout ll_containner;
 	private BluetoothSocket socket;
-	private OutputStream os;
+	private OutputStream os;	
+	private InputStream is;	
+	private Handler handler;
 	
+
+	private LinearLayout ll_containner;
+	private TextView tvRecv;
+	
+	private boolean isConnect;
+	
+	@SuppressLint("HandlerLeak")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -46,6 +54,15 @@ public class MainActivity extends Activity {
 		mBluetoothReceiver = new BluetoothReceiver();
 		//注册监听
 		registerReceiver(mBluetoothReceiver, filter);
+		
+		
+
+
+		handler = new Handler() {
+			public void handleMessage(Message msg) {
+				tvRecv.append((String) msg.obj);
+			}
+		};
 	}
 
 	private class BluetoothReceiver extends BroadcastReceiver {
@@ -72,8 +89,11 @@ public class MainActivity extends Activity {
 //							socket = device.createInsecureRfcommSocketToServiceRecord(UUID.randomUUID());
 							socket.connect();
 							os = socket.getOutputStream();
-							System.out.println("asdf");
+							is = socket.getInputStream();
+							System.out.println("成功连接"+device.getName());
 							Toast.makeText(MainActivity.this, "成功连接"+device.getName(), Toast.LENGTH_SHORT).show();
+							isConnect = true;
+							new readThread().start();//开启读线程读取蓝牙接收的数据
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
@@ -102,7 +122,6 @@ public class MainActivity extends Activity {
 			os.write(0x33);
 			os.flush();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -112,5 +131,41 @@ public class MainActivity extends Activity {
 	
 	public void init() {
 		ll_containner = (LinearLayout) findViewById(R.id.ll_containner);
+		tvRecv = (TextView) findViewById(R.id.tvRecv);
+		
+		isConnect = false;
+	}
+	
+	private class readThread extends Thread {
+
+		public void run() {
+
+			byte[] readBuf = new byte[64];
+
+			while (true) {
+				Message msg = Message.obtain();
+				
+				if (!isConnect) {
+					break;
+				}
+				
+//					readBuf = (byte[]) msg.obj; 
+//				String str = new String(readBuf, 0, msg.arg1);  
+//				int length = str.length();
+				try {
+					int length = is.read(readBuf);
+
+					if (length > 0) {
+						String str = new String(readBuf, 0, length); 
+						msg.obj = str;
+						handler.sendMessage(msg);
+					}
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}
+		}
 	}
 }
