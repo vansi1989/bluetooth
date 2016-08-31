@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">BtFtCtrl</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="time">时间</string>
+    <string name="temperature">温度</string>
+    <string name="Power">ON/OFF</string>
+    <string name="set">SET</string>
+    <string name="open">扫描设备</string>
+    <string name="clear">Clear</string>
+    <string name="hint">Receive Buffer is Empty!</string>
+
+
+</resources>
